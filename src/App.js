@@ -1,25 +1,26 @@
-import logo from './logo.svg';
+import axios from 'axios';
 import './App.css';
+import { useState, useEffect } from "react";
+import User from './Components/User';
+
 
 function App() {
+  const [api, setApi] = useState([]);
+  useEffect(() => {
+    axios.get("https://jsonplaceholder.typicode.com/users")
+      .then(res=>setApi(res.data))
+  }, []);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <User CreateApi={api}/> {/*CreateApi props létrehozása, melynek a paramétere az api kezdőérték változó*/}
+      {
+             
+        api.map((u)=>{
+          return <User  id={u.id} name={u.name} username={u.username} email={u.email}/>
+        })
+      }
+      
+      </div>
   );
 }
-
 export default App;
